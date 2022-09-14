@@ -6,9 +6,11 @@ plugins {
 
 Properties props = loadProperties.call('publish.properties')
 
-group = 'work.lclpnet'
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = project.archives_base_name
 version = gitVersion.call()
-archivesBaseName = 'wcrypt'
+group = project.maven_group
 
 repositories {
     mavenCentral()
