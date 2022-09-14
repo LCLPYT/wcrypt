@@ -97,7 +97,7 @@ class AESCryptoTest {
     @Test
     void writeEncryptedFile() throws IOException, GeneralSecurityException {
         Path encPath = Paths.get("run", "content.enc");
-        if (Files.exists(encPath.getParent())) {
+        if (!Files.exists(encPath.getParent())) {
             Files.createDirectories(encPath.getParent());
         }
 
