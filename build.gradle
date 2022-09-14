@@ -1,9 +1,13 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+    id 'gradle-build-utils' version '1.1.0'
 }
 
-group 'work.lclpnet'
-version '1.0-SNAPSHOT'
+Properties props = loadProperties.call('publish.properties')
+
+group = 'work.lclpnet'
+version = gitVersion.call()
 archivesBaseName = 'wcrypt'
 
 repositories {
@@ -20,4 +24,41 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = project.archives_base_name
+
+            from components.java
+
+            pom {
+                name = 'wcrypt'
+                description = 'A simple Java cryptography library for ease-of-use.'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def env = System.getenv()
+            if (Arrays.stream("DEPLOY_URL", "DEPLOY_USER", "DEPLOY_PASSWORD").allMatch(env.&containsKey)) {
+                credentials {
+                    username env.get("DEPLOY_USER")
+                    password env.get("DEPLOY_PASSWORD")
+                }
+                url env.get("DEPLOY_URL")
+            }
+            else if (Arrays.stream("mavenHost", "mavenUser", "mavenPassword").allMatch(props.&containsKey)) {
+                credentials {
+                    username props.getProperty('mavenUser')
+                    password props.getProperty('mavenPassword')
+                }
+                url props.getProperty('mavenHost')
+            } else {
+                url "file:///${project.projectDir}/repo"
+            }
+        }
+    }
 }

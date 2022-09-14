@@ -6,7 +6,7 @@ out/
 classes/
 repo/
 libs/
-private.propertie
+publish.propertie
 run/
 
 # eclipse
