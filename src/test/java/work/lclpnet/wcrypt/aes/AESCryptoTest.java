@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import work.lclpnet.wcrypt.CryptoUtils;
+import work.lclpnet.wcrypt.TestHelper;
 import work.lclpnet.wcrypt.cipher.IVCipher;
 import work.lclpnet.wcrypt.cipher.SimpleCipher;
 
@@ -125,22 +126,9 @@ class AESCryptoTest {
 
     @Test
     void readEncryptedFile() throws IOException, GeneralSecurityException {
-        byte[] salt;
-        try (InputStream in = getClass().getResourceAsStream("/content.enc.salt");
-             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        byte[] salt = TestHelper.readSalt();
 
-            assertNotNull(in);
-
-            byte[] buffer = new byte[1024];
-            int read;
-
-            while ((read = in.read(buffer)) != -1)
-                out.write(buffer, 0, read);
-
-            salt = out.toByteArray();
-        }
-
-        try (InputStream in = getClass().getResourceAsStream("/content.enc");
+        try (InputStream in = TestHelper.getJarResource("/content.enc");
              ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
             assertNotNull(in);

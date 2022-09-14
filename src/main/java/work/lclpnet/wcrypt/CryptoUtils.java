@@ -7,9 +7,14 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CryptoUtils {
 
@@ -54,6 +59,14 @@ public class CryptoUtils {
         final KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, info.iterations, info.keyLength);
 
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), algorithm);
+    }
+
+    public static Set<String> getAvailableCiphers() {
+        return Arrays.stream(Security.getProviders())
+                .flatMap(p -> p.getServices().stream())
+                .filter(s -> "Cipher".equals(s.getType()))
+                .map(Provider.Service::getAlgorithm)
+                .collect(Collectors.toSet());
     }
 
     public static class KeyGeneratorInfo {

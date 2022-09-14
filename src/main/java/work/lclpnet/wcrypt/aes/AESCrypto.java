@@ -1,6 +1,7 @@
 package work.lclpnet.wcrypt.aes;
 
 import work.lclpnet.wcrypt.CryptoUtils;
+import work.lclpnet.wcrypt.cipher.CipherProvider;
 import work.lclpnet.wcrypt.cipher.IVCipher;
 import work.lclpnet.wcrypt.cipher.IvCipherImpl;
 
@@ -17,6 +18,7 @@ import java.util.Base64;
 public class AESCrypto {
 
     public static final String ALGORITHM = "AES/CBC/PKCS5Padding";
+    public static final CipherProvider PROVIDER = AESCrypto::createCipher;
 
     public static SecretKey generateKey(int n) throws NoSuchAlgorithmException {
         return CryptoUtils.generateKey(n, "AES");

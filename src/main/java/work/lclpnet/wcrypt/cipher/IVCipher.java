@@ -7,4 +7,6 @@ public interface IVCipher extends SimpleCipher {
 
     @Nullable
     IvParameterSpec getIv();
+
+    void setIv(@Nullable IvParameterSpec iv);
 }

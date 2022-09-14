@@ -29,6 +29,11 @@ public class IvCipherImpl extends SimpleCipherImpl implements IVCipher {
     }
 
     @Override
+    public void setIv(@Nullable IvParameterSpec iv) {
+        this.iv = iv;
+    }
+
+    @Override
     public void begin(Mode mode) throws GeneralSecurityException {
         if (iv == null) iv = CryptoUtils.generateIv();
         cipher = Cipher.getInstance(algorithm);
