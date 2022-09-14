@@ -1,4 +1,5 @@
 # wcrypt - Simple Java library for easy cryptography
+[![Gradle Publish](https://github.com/LCLPYT/wcrypt/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/LCLPYT/wcrypt/actions/workflows/gradle-publish.yml)
 
 ## Credits
 - [Java AES Encryption and Decryption](https://www.baeldung.com/java-aes-encryption-decryption) - Baeldung.com; on 
