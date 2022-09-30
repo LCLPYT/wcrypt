@@ -147,6 +147,16 @@ class AESCryptoTest {
         }
     }
 
+    @Test
+    void aesGenerateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] salt = CryptoUtils.randomBytes(8);
+
+        SecretKey key1 = AESCrypto.generateKey("test123", salt);
+        SecretKey key2 = AESCrypto.generateKey(new char[] {'t', 'e', 's', 't', '1', '2', '3'}, salt);
+
+        assertEquals(key1, key2);
+    }
+
     private static Stream<SecretKey> keys() throws NoSuchAlgorithmException, InvalidKeySpecException {
         return Stream.of(
                 generateKey("mypasswd", CryptoUtils.generateSalt()),

@@ -24,6 +24,7 @@ public class CryptoUtils {
     private CryptoUtils() {}
 
     public static byte[] randomBytes(int n) {
+        if (n < 0) throw new IllegalArgumentException("Byte count can't be negative");
         final byte[] bytes = new byte[n];
         new SecureRandom().nextBytes(bytes);
         return bytes;
@@ -46,17 +47,22 @@ public class CryptoUtils {
 
     public static SecretKey generateKey(String password, byte[] salt, String algorithm) throws NoSuchAlgorithmException,
             InvalidKeySpecException {
+        return generateKey(password.toCharArray(), salt, algorithm);
+    }
+
+    public static SecretKey generateKey(char[] password, byte[] salt, String algorithm) throws NoSuchAlgorithmException,
+            InvalidKeySpecException {
 
         final KeyGeneratorInfo info = new KeyGeneratorInfo("PBKDF2WithHmacSHA256", 65536, 256);
 
         return generateKey(password, salt, algorithm, info);
     }
 
-    public static SecretKey generateKey(String password, byte[] salt, String algorithm, KeyGeneratorInfo info)
+    public static SecretKey generateKey(char[] password, byte[] salt, String algorithm, KeyGeneratorInfo info)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         final SecretKeyFactory factory = SecretKeyFactory.getInstance(info.algorithm);
-        final KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, info.iterations, info.keyLength);
+        final KeySpec spec = new PBEKeySpec(password, salt, info.iterations, info.keyLength);
 
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), algorithm);
     }

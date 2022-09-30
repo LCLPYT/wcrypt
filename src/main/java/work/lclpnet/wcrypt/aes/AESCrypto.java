@@ -26,6 +26,11 @@ public class AESCrypto {
 
     public static SecretKey generateKey(String password, byte[] salt) throws NoSuchAlgorithmException,
             InvalidKeySpecException {
+        return generateKey(password.toCharArray(), salt);
+    }
+
+    public static SecretKey generateKey(char[] password, byte[] salt) throws NoSuchAlgorithmException,
+            InvalidKeySpecException {
 
         return CryptoUtils.generateKey(password, salt, "AES");
     }
